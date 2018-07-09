@@ -11,6 +11,8 @@ const path         = require('path');
 //sessions
 const session    = require("express-session");
 const MongoStore = require("connect-mongo")(session);
+//passport
+const passport = require('./helpers/passport');
 
 
 mongoose.Promise = Promise;
@@ -28,14 +30,22 @@ const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.
 const app = express();
 
 //session
+// app.use(session({
+//   secret: "bliss",
+//   cookie: { maxAge: 60000 },
+//   store: new MongoStore({
+//     mongooseConnection: mongoose.connection,
+//     ttl: 24 * 60 * 60 // 1 day
+//   })
+// }));
 app.use(session({
   secret: "bliss",
-  cookie: { maxAge: 60000 },
-  store: new MongoStore({
-    mongooseConnection: mongoose.connection,
-    ttl: 24 * 60 * 60 // 1 day
-  })
+  resave: true,
+  saveUninitialized: true
 }));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Middleware Setup
 app.use(logger('dev'));

@@ -8,6 +8,11 @@ const productSchema = new Schema({
     },
     name: String,
     price: String,
+    pics:[
+        {
+            type:String
+        }
+    ]
 
 },{
     timestamps:{

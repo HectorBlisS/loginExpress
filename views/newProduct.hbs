@@ -1,0 +1,19 @@
+<h2>Agrega tu produto</h2>
+
+<form action="/products/new" method="POST" enctype="multipart/form-data">
+<p>
+    <input name="name" placeholder="E nombre e tu produto" type="text">
+</p>
+<p>
+    <input name="price" placeholder="cuanto vale tu produto" type="number">
+</p>
+<p>
+    Cover
+    <input type="file" name="cover">
+</p>
+<p>
+    <input name="photos" multiple type="file">
+</p>
+<input type="submit">
+
+</form>

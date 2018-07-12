@@ -7,6 +7,10 @@ const passport = require('passport');
 const sendWelcomeMail = require('../helpers/mailer').sendWelcomeMail;
 const sendTemplate = require('../helpers/mailer').sendTemplate;
 
+//multer config
+const multer = require('multer');
+const upload = multer({dest: './public/assets'});
+
 
 function isAuthenticated(req,res,next){
     if(req.isAuthenticated()){
@@ -84,11 +88,11 @@ router.get('/signup', (req,res)=>{
 //1 crear la ruta post (recibe)
 //2 necesitamos chear las contraseñas que coincidan
 //3 crear al usuario en la db
-router.post('/signup', (req,res,next)=>{
-
+router.post('/signup', upload.single('photo'),(req,res,next)=>{
+    req.body.photoURL = '/assets/' + req.file.filename;
     User.register(req.body, req.body.password)
     .then(user=>{
-        sendTemplate(user);
+        //sendTemplate(user);
         res.redirect('/login')
     })
     .catch(e=>next(e));

@@ -4,6 +4,7 @@ const User = require('../models/User');
 // const Product = require('../models/Product');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
+const sendWelcomeMail = require('../helpers/mailer').sendWelcomeMail;
 
 function isAuthenticated(req,res,next){
     if(req.isAuthenticated()){
@@ -84,7 +85,10 @@ router.get('/signup', (req,res)=>{
 router.post('/signup', (req,res,next)=>{
 
     User.register(req.body, req.body.password)
-    .then(user=>res.redirect('/login'))
+    .then(user=>{
+        sendWelcomeMail(user);
+        res.redirect('/login')
+    })
     .catch(e=>next(e));
 
 

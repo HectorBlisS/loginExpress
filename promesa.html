@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <script>
+        var lili = {
+                    "name": "#Lili'sTeam",
+                    "occupation": "Manipulation",
+                    "debt": false, //others pay for her
+                    "weapon": "Loveliness",
+                };
+        var url = 'https://ih-crud-api.herokuapp.com/characters/31'
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            //body: JSON.stringify(lili)
+        })
+        .then(res=>{
+            if(!res.ok) return Promise.reject(res.statusText);
+            return res.json()
+        })
+        .then(data=>{
+            console.log(data);
+        })
+        .catch(err=>console.log(err))
+
+
+  
+    </script>
+</body>
+</html>

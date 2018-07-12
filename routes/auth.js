@@ -1,5 +1,7 @@
 const router = require('express').Router();
 const User = require('../models/User');
+// const Profile = require('../models/Profile');
+// const Product = require('../models/Product');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 
@@ -20,6 +22,17 @@ function isLoggedIn(req,res,next){
     }
 }
 
+
+router.get('/profile', isAuthenticated, (req,res, next)=>{
+    User.findById(req.user._id)
+    .populate('profile')
+    .populate('products')
+    .then(user=>{
+        res.send(user);
+    })
+    .catch(e=>next(e))
+});
+
 router.get('/logout', (req,res,next)=>{
     req.logout();
     res.send('cerrado ??? ');
@@ -30,7 +43,8 @@ router.get('/logout', (req,res,next)=>{
 });
 
 router.get('/private', isAuthenticated, (req,res)=>{
-    res.send("esto es privao");
+    const admin = req.user.role === "ADMIN";
+    res.render('privado', {admin});
 });
 
 router.get('/login', isLoggedIn, (req,res)=>{
@@ -38,7 +52,7 @@ router.get('/login', isLoggedIn, (req,res)=>{
 });
 
 router.post('/login', passport.authenticate('local'), (req,res,next)=>{
-
+    req.app.locals.user = req.user;
     res.redirect('/private');
 
     // User.findOne({email:req.body.email})
